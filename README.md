@@ -4,9 +4,9 @@
 
 ![Bintray](https://img.shields.io/bintray/v/drewcarlson/Blockset-Kotlin/Blockset-Kotlin?color=blue)
 ![](https://img.shields.io/maven-metadata/v?label=artifactory&logoColor=lightgrey&metadataUrl=https%3A%2F%2Foss.jfrog.org%2Fartifactory%2Foss-snapshot-local%2Fdrewcarlson%2Fblockset%2Fblockset%2Fmaven-metadata.xml&color=lightgrey)
-![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Jvm%20Tests/badge.svg)
-![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Js%20Tests/badge.svg)
-![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Native%20Tests/badge.svg)
+![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Jvm/badge.svg)
+![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Js/badge.svg)
+![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Native/badge.svg)
 
 Kotlin wrapper for the [Blockset API](https://blockset.com/).
 
