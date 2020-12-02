@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform") version KOTLIN_VERSION
@@ -89,6 +90,7 @@ kotlin {
             }
         }
         val commonTest by getting {
+            kotlin.srcDir("src/commonTest/build/gen")
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
@@ -186,6 +188,27 @@ kotlin {
         }
         configure(listOf(tvosTest, watchosTest)) {
             dependsOn(iosTest)
+        }
+    }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += "" // TODO: Unsigned types
+    }
+    doFirst {
+        file("src/commonTest/build/gen/")
+            .also { if (!it.exists()) it.mkdirs() }
+        val configFile = file("src/commonTest/build/gen/config.kt")
+        val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
+        if (!configFile.exists() && !bdbClientToken.isNullOrBlank()) {
+            configFile.createNewFile()
+            configFile.writeText(
+                """|package drewcarlson.blockset
+                   |
+                   |const val BDB_CLIENT_TOKEN = "$bdbClientToken"
+                """.trimMargin()
+            )
         }
     }
 }
