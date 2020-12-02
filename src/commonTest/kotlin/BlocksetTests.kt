@@ -1,6 +1,8 @@
 package drewcarlson.blockset
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -8,7 +10,12 @@ expect fun runBlocking(block: suspend CoroutineScope.() -> Unit)
 
 class BlocksetTests {
 
-    val bdbService = BdbService.createForTest(bdbAuthToken = BDB_CLIENT_TOKEN)
+    private lateinit var bdbService: BdbService
+
+    @BeforeTest
+    fun setUp() {
+        bdbService = BdbService.createForTest(bdbAuthToken = BDB_CLIENT_TOKEN)
+    }
 
     @Test
     fun testCurrency() = runBlocking {
@@ -17,6 +24,8 @@ class BlocksetTests {
         assertEquals("Bitcoin", btcMainnet.name)
         assertEquals("btc", btcMainnet.code)
         assertEquals("native", btcMainnet.type)
+
+        delay(100)
 
         val ethMainnet = bdbService.getCurrency("ethereum-mainnet:__native__")
 

@@ -16,9 +16,10 @@ private const val DEFAULT_BDB_BASE_URL = "api.blockset.com"
 private val json = Json {
     isLenient = true
     ignoreUnknownKeys = true
+    coerceInputValues = true
 }
 
-internal class BdbServiceImpl internal constructor(
+internal class KtorBdbService internal constructor(
     httpClient: HttpClient,
     bdbBaseURL: String = DEFAULT_BDB_BASE_URL,
     bdbAuthToken: String? = null
@@ -30,7 +31,7 @@ internal class BdbServiceImpl internal constructor(
         }
 
         defaultRequest {
-            host = bdbBaseURL
+            url.host = bdbBaseURL
             url.protocol = URLProtocol.HTTPS
             bdbAuthToken?.let {
                 header("Authorization", "Bearer $it")

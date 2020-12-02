@@ -12,14 +12,14 @@ interface BdbService {
         @JvmOverloads
         public fun create(
             httpClient: HttpClient = HttpClient()
-        ): BdbService = BdbServiceImpl(httpClient, DEFAULT_BDB_BASE_URL)
+        ): BdbService = KtorBdbService(httpClient, DEFAULT_BDB_BASE_URL)
 
         @JvmOverloads
         public fun createForTest(
             bdbAuthToken: String,
             httpClient: HttpClient = HttpClient(),
             bdbBaseURL: String = DEFAULT_BDB_BASE_URL
-        ): BdbService = BdbServiceImpl(httpClient, bdbBaseURL, bdbAuthToken)
+        ): BdbService = KtorBdbService(httpClient, bdbBaseURL, bdbAuthToken)
     }
 
     public suspend fun getBlockchains(isMainnet: Boolean = true): BdbBlockchains
