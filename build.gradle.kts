@@ -54,7 +54,13 @@ val installTestConfig by tasks.creating {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        compilations.onEach { compilation ->
+            compilation.kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
     js(BOTH) {
         browser {
             testTask {
