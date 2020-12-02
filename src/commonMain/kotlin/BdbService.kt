@@ -40,8 +40,8 @@ interface BdbService {
 
     public suspend fun createSubscription(
         deviceId: String,
-        endpoint: BdbSubscription.BdbSubscriptionEndpoint,
-        currencies: List<BdbSubscription.BdbSubscriptionCurrency>
+        endpoint: BdbSubscription.Endpoint,
+        currencies: List<BdbSubscription.Currency>
     ): BdbSubscription
 
     public suspend fun updateSubscription(subscription: BdbSubscription): BdbSubscription

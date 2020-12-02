@@ -69,11 +69,11 @@ internal class BdbServiceImpl internal constructor(
 
     public override suspend fun createSubscription(
         deviceId: String,
-        endpoint: BdbSubscription.BdbSubscriptionEndpoint,
-        currencies: List<BdbSubscription.BdbSubscriptionCurrency>
+        endpoint: BdbSubscription.Endpoint,
+        currencies: List<BdbSubscription.Currency>
     ): BdbSubscription =
         http.post("/subscriptions") {
-            body = BdbSubscription.BdbNewSubscription(
+            body = BdbSubscription.Create(
                 deviceId, endpoint, currencies
             )
         }

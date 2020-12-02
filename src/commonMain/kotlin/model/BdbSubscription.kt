@@ -22,33 +22,33 @@ data class BdbSubscription(
         @SerialName("device_id")
         val deviceId: String,
         val endpoint: String,
-        val currencies: List<BdbSubscriptionCurrency>
+        val currencies: List<Currency>
 ) {
 
     @Serializable
-    data class BdbNewSubscription(
+    data class Create(
             @SerialName("device_id")
             val deviceId: String,
-            val endpoint: BdbSubscriptionEndpoint,
-            val currencies: List<BdbSubscriptionCurrency>
+            val endpoint: Endpoint,
+            val currencies: List<Currency>
     )
 
     @Serializable
-    data class BdbSubscriptionCurrency(
+    data class Currency(
             @SerialName("currency_id")
             val currencyId: String,
             val addresses: List<String>,
-            val events: List<BdbSubscriptionEvent>
+            val events: List<Event>
     )
 
     @Serializable
-    data class BdbSubscriptionEvent(
+    data class Event(
             val name: String,
             val confirmations: Int // TODO: UInt
     )
 
     @Serializable
-    data class BdbSubscriptionEndpoint(
+    data class Endpoint(
             val kind: String,
             val environment: String,
             val value: String
