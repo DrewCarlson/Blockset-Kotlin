@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BdbBlockchainFee(
-        val fee: BdbAmount,
-        val tier: String,
-        @SerialName("estimated_confirmation_in")
-        val confirmationTimeInMilliseconds: Long // TODO: ULong
+    val fee: BdbAmount,
+    val tier: String,
+    @SerialName("estimated_confirmation_in")
+    val confirmationTimeInMilliseconds: Long // TODO: ULong
 )

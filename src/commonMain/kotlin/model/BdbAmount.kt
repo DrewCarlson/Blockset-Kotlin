@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BdbAmount(
-        @SerialName("currency_id")
-        val currencyId: String,
-        @SerialName("amount")
-        val value: String
+    @SerialName("currency_id")
+    val currencyId: String,
+    @SerialName("amount")
+    val value: String
 )

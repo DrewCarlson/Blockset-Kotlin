@@ -1,7 +1,8 @@
 package drewcarlson.blockset
 
 import kotlinx.coroutines.CoroutineScope
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 expect fun runBlocking(block: suspend CoroutineScope.() -> Unit)
 
