@@ -15,7 +15,6 @@ class BlocksetTests {
 
         assertEquals("Bitcoin", btcMainnet.name)
         assertEquals("btc", btcMainnet.code)
-        assertEquals("1855978125000000", btcMainnet.totalSupply)
         assertEquals("native", btcMainnet.type)
     }
 }

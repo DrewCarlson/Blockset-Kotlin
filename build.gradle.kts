@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform") version KOTLIN_VERSION
@@ -14,6 +13,8 @@ allprojects {
         jcenter()
     }
 }
+
+val testGenSrcPath = "src/commonTest/build/config"
 
 val mavenUrl: String by ext
 val mavenSnapshotUrl: String by ext
@@ -60,6 +61,33 @@ kotlin {
     watchos()
     tvos()
 
+    targets.onEach {
+        it.compilations.onEach { compilation ->
+            compilation.kotlinOptions {
+                //freeCompilerArgs += "" // TODO: Unsigned types
+            }
+
+            if (compilation.name.contains("test", true)) {
+                compilation.compileKotlinTask.doFirst {
+                    rootProject.file(testGenSrcPath).also { if (!it.exists()) it.mkdirs() }
+                    val configFile = file("${testGenSrcPath}${File.separator}config.kt")
+                    val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
+                    if (!configFile.exists()) {
+                        checkNotNull(bdbClientToken) {
+                            "BDB_CLIENT_TOKEN must be set for tests to run."
+                        }
+                        configFile.writeText(
+                            """|package drewcarlson.blockset
+                               |
+                               |const val BDB_CLIENT_TOKEN = "$bdbClientToken"
+                               |""".trimMargin()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     if (findProperty("hostPublishing") ?: "false" == "true") {
         val host = System.getProperty("os.name", "unknown")
         when {
@@ -90,7 +118,7 @@ kotlin {
             }
         }
         val commonTest by getting {
-            kotlin.srcDir("src/commonTest/build/gen")
+            kotlin.srcDir(testGenSrcPath)
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
@@ -188,27 +216,6 @@ kotlin {
         }
         configure(listOf(tvosTest, watchosTest)) {
             dependsOn(iosTest)
-        }
-    }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "" // TODO: Unsigned types
-    }
-    doFirst {
-        file("src/commonTest/build/gen/")
-            .also { if (!it.exists()) it.mkdirs() }
-        val configFile = file("src/commonTest/build/gen/config.kt")
-        val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
-        if (!configFile.exists() && !bdbClientToken.isNullOrBlank()) {
-            configFile.createNewFile()
-            configFile.writeText(
-                """|package drewcarlson.blockset
-                   |
-                   |const val BDB_CLIENT_TOKEN = "$bdbClientToken"
-                """.trimMargin()
-            )
         }
     }
 }

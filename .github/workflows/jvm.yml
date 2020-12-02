@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  BDB_CLIENT_TOKEN: ${{ secrets.BDB_CLIENT_TOKEN }}
+
 jobs:
   gradle:
     strategy:
