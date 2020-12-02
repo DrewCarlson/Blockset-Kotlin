@@ -11,11 +11,17 @@ class BlocksetTests {
     val bdbService = BdbService.createForTest(bdbAuthToken = BDB_CLIENT_TOKEN)
 
     @Test
-    fun test() = runBlocking {
+    fun testCurrency() = runBlocking {
         val btcMainnet = bdbService.getCurrency("bitcoin-mainnet:__native__")
 
         assertEquals("Bitcoin", btcMainnet.name)
         assertEquals("btc", btcMainnet.code)
         assertEquals("native", btcMainnet.type)
+
+        val ethMainnet = bdbService.getCurrency("ethereum-mainnet:__native__")
+
+        assertEquals("Ethereum", ethMainnet.name)
+        assertEquals("eth", ethMainnet.code)
+        assertEquals("native", ethMainnet.type)
     }
 }
