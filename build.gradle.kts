@@ -35,6 +35,24 @@ configure<PublishingExtension> {
     }
 }
 
+val installTestConfig by tasks.creating {
+    val configFile = rootProject.file("${testGenSrcPath}/config.kt")
+    onlyIf { !configFile.exists() }
+    doFirst {
+        rootProject.file(testGenSrcPath).also { if (!it.exists()) it.mkdirs() }
+        val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
+        if (!configFile.exists()) {
+            checkNotNull(bdbClientToken) {
+                "BDB_CLIENT_TOKEN must be set for tests to run."
+            }
+            configFile.writeText(buildString {
+                appendln("package drewcarlson.blockset")
+                appendln("const val BDB_CLIENT_TOKEN = \"$bdbClientToken\"")
+            })
+        }
+    }
+}
+
 kotlin {
     jvm()
     js(BOTH) {
@@ -61,28 +79,13 @@ kotlin {
     watchos()
     tvos()
 
-    targets.all(Action {
-        compilations.all(Action {
-            if (name.contains("test", true)) {
-                compileKotlinTask.doFirst {
-                    rootProject.file(testGenSrcPath).also { if (!it.exists()) it.mkdirs() }
-                    val configFile = file("${testGenSrcPath}${File.separator}config.kt")
-                    val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
-                    if (!configFile.exists()) {
-                        checkNotNull(bdbClientToken) {
-                            "BDB_CLIENT_TOKEN must be set for tests to run."
-                        }
-                        configFile.writeText(
-                            """|package drewcarlson.blockset
-                               |
-                               |const val BDB_CLIENT_TOKEN = "$bdbClientToken"
-                               |""".trimMargin()
-                        )
-                    }
-                }
+    targets.onEach { target ->
+        target.compilations.onEach { compilation ->
+            if (compilation.name.equals("test", true)) {
+                compilation.compileKotlinTask.dependsOn(installTestConfig)
             }
-        })
-    })
+        }
+    }
 
     if (findProperty("hostPublishing") ?: "false" == "true") {
         val host = System.getProperty("os.name", "unknown")
