@@ -61,14 +61,10 @@ kotlin {
     watchos()
     tvos()
 
-    targets.onEach {
-        it.compilations.onEach { compilation ->
-            compilation.kotlinOptions {
-                //freeCompilerArgs += "" // TODO: Unsigned types
-            }
-
-            if (compilation.name.contains("test", true)) {
-                compilation.compileKotlinTask.doFirst {
+    targets.all(Action {
+        compilations.all(Action {
+            if (name.contains("test", true)) {
+                compileKotlinTask.doFirst {
                     rootProject.file(testGenSrcPath).also { if (!it.exists()) it.mkdirs() }
                     val configFile = file("${testGenSrcPath}${File.separator}config.kt")
                     val bdbClientToken = System.getenv("BDB_CLIENT_TOKEN")
@@ -85,8 +81,8 @@ kotlin {
                     }
                 }
             }
-        }
-    }
+        })
+    })
 
     if (findProperty("hostPublishing") ?: "false" == "true") {
         val host = System.getProperty("os.name", "unknown")
@@ -108,6 +104,12 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings.apply {
+                useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
+            }
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
