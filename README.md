@@ -42,15 +42,15 @@ Swift
 
 Artifacts are available on [Bintray](https://bintray.com/drewcarlson/Blockset-Kotlin).
 
-```groovy
+```kotlin
 repositories {
   jcenter()
   // Or snapshots
-  maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+  maven { setUrl("http://oss.jfrog.org/artifactory/oss-snapshot-local") }
 }
 
 dependencies {
-  implementation "drewcarlson.blockset:blockset-jvm:$blockset_version"
+  implementation("drewcarlson.blockset:blockset-jvm:$blockset_version")
 }
 ```
 
@@ -58,7 +58,7 @@ dependencies {
 Note: it is required to specify a Ktor client engine implementation.
 ([Documentation](https://ktor.io/clients/http-client/multiplatform.html))
 
-```groovy
+```kotlin
 dependencies {
   // Jvm/Android
   implementation("io.ktor:ktor-client-okhttp:$ktor_version")
