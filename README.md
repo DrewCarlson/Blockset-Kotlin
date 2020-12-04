@@ -72,10 +72,6 @@ dependencies {
 }
 ``` 
 
-## Swift Demo
-
-The [swift-demo](swift-demo) module provides a Framework compilation module, and a complete [Xcode project](swift-demo/blockset-swift) written in Swift.
-
 ## License
 ```
 Copyright (c) 2020 Andrew Carlson
