@@ -20,6 +20,9 @@ For a comprehensive list of available endpoints and to understand the returned d
 
 Kotlin
 ```kotlin
+val bdbService = BdbService.create(token)
+val bitcoin = blockset.getBlockchain("bitcoin-mainnet")
+println(bitcoin.name) // Bitcoin
 ```
 Swift
 ```swift
