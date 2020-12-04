@@ -39,9 +39,9 @@ internal class KtorBdbService internal constructor(
         }
     }
 
-    public override suspend fun getBlockchains(isMainnet: Boolean): BdbBlockchains =
+    public override suspend fun getBlockchains(testnet: Boolean): BdbBlockchains =
         http.get("/blockchains") {
-            parameter("testnet", !isMainnet)
+            parameter("testnet", testnet)
         }
 
     public override suspend fun getBlockchain(id: String): BdbBlockchain =

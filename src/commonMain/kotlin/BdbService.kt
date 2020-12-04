@@ -22,7 +22,7 @@ interface BdbService {
         ): BdbService = KtorBdbService(httpClient, bdbBaseURL, bdbAuthToken)
     }
 
-    public suspend fun getBlockchains(isMainnet: Boolean = true): BdbBlockchains
+    public suspend fun getBlockchains(testnet: Boolean = false): BdbBlockchains
 
     public suspend fun getBlockchain(id: String): BdbBlockchain
 
