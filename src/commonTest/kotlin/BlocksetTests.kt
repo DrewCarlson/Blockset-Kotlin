@@ -25,12 +25,14 @@ class BlocksetTests {
         assertEquals("btc", btcMainnet.code)
         assertEquals("native", btcMainnet.type)
 
-        delay(100)
+        delay(1100)
 
         val ethMainnet = bdbService.getCurrency("ethereum-mainnet:__native__")
 
         assertEquals("Ethereum", ethMainnet.name)
         assertEquals("eth", ethMainnet.code)
         assertEquals("native", ethMainnet.type)
+
+        delay(1100)
     }
 }
