@@ -8,8 +8,12 @@ import kotlinx.cli.*
 import kotlinx.serialization.json.Json
 import kotlin.native.concurrent.SharedImmutable
 
+/** Open a URL with the default browser */
+expect fun openUrl(url: String)
+/** Get an environment variable by name */
 expect fun getEnv(key: String): String?
 
+/** Pretty JSON formatter for console output. */
 @SharedImmutable
 val prettyJson = Json {
     isLenient = true
@@ -25,16 +29,18 @@ fun runCli(args: Array<String>) {
         }
     }.use { httpClient ->
         val blockset = BdbService.createForTest(token, httpClient)
-        val argParser = ArgParser("blockset")
-        argParser.subcommands(
-            BlocksCommand(blockset),
-            TransfersCommand(blockset),
-            CurrenciesCommand(blockset),
-            BlockchainsCommand(blockset),
-            TransactionsCommand(blockset),
-            PushEndpointsCommand(blockset),
-            SubscriptionsCommand(blockset)
-        )
-        argParser.parse(args)
+        with(ArgParser("blockset")) {
+            subcommands(
+                AuthCommand(blockset),
+                BlocksCommand(blockset),
+                TransfersCommand(blockset),
+                CurrenciesCommand(blockset),
+                BlockchainsCommand(blockset),
+                TransactionsCommand(blockset),
+                PushEndpointsCommand(blockset),
+                SubscriptionsCommand(blockset)
+            )
+            parse(args) // Parse and run
+        }
     }
 }
