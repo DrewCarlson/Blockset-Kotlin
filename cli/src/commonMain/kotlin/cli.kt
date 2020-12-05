@@ -1,5 +1,6 @@
 package cli
 
+import com.github.ajalt.mordant.terminal.Terminal
 import drewcarlson.blockset.BdbService
 import io.ktor.client.*
 import io.ktor.client.features.logging.*
@@ -21,6 +22,7 @@ val prettyJson = Json {
 }
 
 fun runCli(args: Array<String>) {
+    val terminal = Terminal()
     val token = checkNotNull(getEnv("BDB_CLIENT_TOKEN"))
     HttpClient {
         install(Logging) {
@@ -31,11 +33,11 @@ fun runCli(args: Array<String>) {
         val blockset = BdbService.createForTest(token, httpClient)
         with(ArgParser("blockset")) {
             subcommands(
-                AuthCommand(blockset),
+                AuthCommand(blockset, terminal),
                 BlocksCommand(blockset),
                 TransfersCommand(blockset),
                 CurrenciesCommand(blockset),
-                BlockchainsCommand(blockset),
+                BlockchainsCommand(blockset, terminal),
                 TransactionsCommand(blockset),
                 PushEndpointsCommand(blockset),
                 SubscriptionsCommand(blockset)

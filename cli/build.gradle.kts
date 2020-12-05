@@ -6,7 +6,8 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://kotlin.bintray.com/kotlinx") }
+    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
+    maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
 
 kotlin {
@@ -37,6 +38,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:$KTOR_VERSION")
                 implementation("io.ktor:ktor-client-json:$KTOR_VERSION")
                 implementation("io.ktor:ktor-client-serialization:$KTOR_VERSION")
+                implementation("com.github.ajalt.mordant:mordant:$MORDANT_VERSION")
             }
         }
 
