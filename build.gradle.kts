@@ -16,6 +16,13 @@ val testGenSrcPath = "src/commonTest/build/config"
 val mavenUrl: String by ext
 val mavenSnapshotUrl: String by ext
 
+
+System.getenv("GITHUB_REF")?.let { ref ->
+    if (ref.startsWith("refs/tags/")) {
+        version = ref.substringAfterLast("refs/tags/")
+    }
+}
+
 publishing {
     repositories {
         maven {
@@ -29,12 +36,6 @@ publishing {
                 password = System.getenv("BINTRAY_API_KEY")
             }
         }
-    }
-}
-
-System.getenv("GITHUB_REF")?.let { ref ->
-    if (ref.startsWith("refs/tags/")) {
-        version = ref.substringAfterLast("refs/tags/")
     }
 }
 
