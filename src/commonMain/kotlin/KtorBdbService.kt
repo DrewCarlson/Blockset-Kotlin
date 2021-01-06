@@ -25,15 +25,18 @@ internal class KtorBdbService internal constructor(
     bdbAuthToken: String? = null
 ) : BdbService {
 
+    @Suppress("UnnecessaryVariable")
     private val http = httpClient.config {
         install(JsonFeature) {
             serializer = KotlinxSerializer(json)
         }
 
+        val baseUrl = bdbBaseURL
+        val token = bdbAuthToken
         defaultRequest {
-            url.host = bdbBaseURL
+            url.host = baseUrl
             url.protocol = URLProtocol.HTTPS
-            bdbAuthToken?.let {
+            token?.let {
                 header("Authorization", "Bearer $it")
             }
         }

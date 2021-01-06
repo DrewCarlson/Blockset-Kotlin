@@ -9,7 +9,8 @@ private const val DEFAULT_BDB_BASE_URL = "api.blockset.com"
 interface BdbService {
 
     companion object {
-        @JvmOverloads
+        public fun create(): BdbService = create(HttpClient())
+
         public fun create(
             httpClient: HttpClient = HttpClient()
         ): BdbService = KtorBdbService(httpClient, DEFAULT_BDB_BASE_URL)
