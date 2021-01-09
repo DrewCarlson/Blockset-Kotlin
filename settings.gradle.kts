@@ -5,7 +5,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = "Blockset-Kotlin"
+rootProject.name = "blockset"
 
 enableFeaturePreview("GRADLE_METADATA")
 

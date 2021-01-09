@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     kotlin("multiplatform") version KOTLIN_VERSION
     kotlin("plugin.serialization") version KOTLIN_VERSION
@@ -19,7 +16,14 @@ val testGenSrcPath = "src/commonTest/build/config"
 val mavenUrl: String by ext
 val mavenSnapshotUrl: String by ext
 
-configure<PublishingExtension> {
+
+System.getenv("GITHUB_REF")?.let { ref ->
+    if (ref.startsWith("refs/tags/")) {
+        version = ref.substringAfterLast("refs/tags/")
+    }
+}
+
+publishing {
     repositories {
         maven {
             url = if (version.toString().endsWith("SNAPSHOT")) {
@@ -93,25 +97,6 @@ kotlin {
         }
     }
 
-    if (findProperty("hostPublishing") ?: "false" == "true") {
-        val host = System.getProperty("os.name", "unknown")
-        when {
-            host.contains("win") -> {
-                exclusivePublishing(mingwX64("win64"))
-            }
-            host.contains("mac") -> {
-                val targets = mutableListOf<KotlinNativeTarget>(macosX64("macos"))
-                ios { targets.add(this) }
-                tvos { targets.add(this) }
-                watchos { targets.add(this) }
-                exclusivePublishing(*targets.toTypedArray())
-            }
-            else -> {
-                exclusivePublishing(targets["metadata"], jvm(), js(BOTH), linuxX64())
-            }
-        }
-    }
-
     sourceSets {
         all {
             languageSettings.apply {
@@ -163,12 +148,6 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-js"))
                 implementation("io.ktor:ktor-client-js:$KTOR_VERSION")
-                implementation(npm("node-fetch", "*"))
-                implementation(npm("text-encoding", "*"))
-                implementation(npm("bufferutil", "*"))
-                implementation(npm("utf-8-validate", "*"))
-                implementation(npm("abort-controller", "*"))
-                implementation(npm("fs", "*"))
             }
         }
 
@@ -230,14 +209,3 @@ kotlin {
         }
     }
 }
-
-/** Disabled all publications except for the provided [targets] */
-fun exclusivePublishing(vararg targets: KotlinTarget) =
-    targets.forEach { target ->
-        target.mavenPublication {
-            val targetPublication = this@mavenPublication
-            tasks.withType<AbstractPublishToMaven>()
-                .matching { it.publication != targetPublication }
-                .all { enabled = false }
-        }
-    }
