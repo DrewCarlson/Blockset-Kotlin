@@ -21,7 +21,7 @@ interface BdbService {
         @JvmOverloads
         public fun createForTest(
             bdbAuthToken: String,
-            httpClient: HttpClient = HttpClient(),
+            httpClient: HttpClient,
             bdbBaseURL: String = DEFAULT_BDB_BASE_URL
         ): BdbService = KtorBdbService(httpClient, bdbBaseURL, bdbAuthToken)
     }
