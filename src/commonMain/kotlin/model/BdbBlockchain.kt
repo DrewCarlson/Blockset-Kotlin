@@ -31,7 +31,11 @@ data class BdbBlockchain(
     @SerialName("confirmations_until_final")
     val confirmationsUntilFinal: Int, // TODO: UInt
     @SerialName("block_height")
-    val blockHeight: Long // TODO: ULong
+    val blockHeight: Long, // TODO: ULong
+    @SerialName("verified_block_hash")
+    val verifiedBlockHash: String? = null,
+    @SerialName("verified_height")
+    val verifiedHeight: Long? = null, // TODO: ULong
 ) {
     fun hasBlockHeight() =
         blockHeight.toULong() != BLOCK_HEIGHT_UNSPECIFIED
