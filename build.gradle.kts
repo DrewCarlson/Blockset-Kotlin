@@ -86,7 +86,7 @@ kotlin {
     linuxX64()
 
     ios()
-    watchos()
+    //watchos()
     tvos()
 
     targets.onEach { target ->
@@ -199,12 +199,12 @@ kotlin {
         // Configure tvos and watchos to build on ios sources
         val tvosMain by getting
         val tvosTest by getting
-        val watchosMain by getting
-        val watchosTest by getting
-        configure(listOf(tvosMain, watchosMain)) {
+        //val watchosMain by getting
+        //val watchosTest by getting
+        configure(listOf(tvosMain/*, watchosMain)) {
             dependsOn(iosMain)
         }
-        configure(listOf(tvosTest, watchosTest)) {
+        configure(listOf(tvosTest, watchosTest*/)) {
             dependsOn(iosTest)
         }
     }

@@ -52,9 +52,7 @@ internal class KtorBdbService internal constructor(
 
     public override suspend fun getCurrencies(blockchainId: String?): BdbCurrencies =
         http.get("/currencies") {
-            if (blockchainId != null) {
-                parameter("blockchain_id", blockchainId)
-            }
+            parameter("blockchain_id", blockchainId)
         }
 
     public override suspend fun getCurrency(currencyId: String): BdbCurrency =
@@ -188,5 +186,17 @@ internal class KtorBdbService internal constructor(
             parameter("include_tx", false)
             parameter("include_tx_raw", false)
             parameter("include_tx_proof", false)
+        }
+
+
+    public override suspend fun addressLookup(
+        domainName: String,
+        vararg currencyCodes: String
+    ): BdbAddresses =
+        http.get("/resolve") {
+            parameter("domain_name", domainName)
+            currencyCodes.forEach {
+                parameter("currency_code", it)
+            }
         }
 }

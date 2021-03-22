@@ -9,4 +9,4 @@ rootProject.name = "blockset"
 
 enableFeaturePreview("GRADLE_METADATA")
 
-include(":cli")
+//include(":cli")
