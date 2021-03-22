@@ -103,4 +103,9 @@ interface BdbService {
     ): BdbBlock
 
     public suspend fun getBlockWithRaw(blockId: String): BdbBlock
+
+    public suspend fun addressLookup(
+        domainName: String,
+        vararg currencyCodes: String
+    ): BdbAddresses
 }
