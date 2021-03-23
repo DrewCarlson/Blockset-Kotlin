@@ -10,10 +10,6 @@
 
 Kotlin wrapper for the [Blockset API](https://blockset.com/).
 
-## About
-
-Blockset-Kotlin is written in common Kotlin to support multiplatform development.  [Kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) provides json (de)serialization and [Ktor](https://ktor.io) the HTTP API.
-
 ## Usage
 
 For a comprehensive list of available endpoints and to understand the returned data, see [docs.blockset.com](https://docs.blockset.com/).
@@ -21,11 +17,15 @@ For a comprehensive list of available endpoints and to understand the returned d
 Kotlin
 ```kotlin
 val bdbService = BdbService.create(token)
-val bitcoin = blockset.getBlockchain("bitcoin-mainnet")
+val bitcoin = bdbService.getBlockchain("bitcoin-mainnet")
 println(bitcoin.name) // Bitcoin
 ```
 Swift
 ```swift
+let bdbService = BdbServiceCompanion.create(token)
+bdbService.getBlockchain("bitcoin-mainnet") { (bitcoin, error) in
+  // ...
+}
 ``` 
 
 ## Download
@@ -37,20 +37,21 @@ Swift
 ![](https://img.shields.io/static/v1?label=&message=macOS&color=blue)
 ![](https://img.shields.io/static/v1?label=&message=Windows&color=blue)
 ![](https://img.shields.io/static/v1?label=&message=iOS&color=blue)
-![](https://img.shields.io/static/v1?label=&message=tvOS&color=blue)
-![](https://img.shields.io/static/v1?label=&message=watchOS&color=blue)
-
-Artifacts are available on [Bintray](https://bintray.com/drewcarlson/Blockset-Kotlin).
+![](https://img.shields.io/static/v1?label=&message=tvOS&color=red)
+![](https://img.shields.io/static/v1?label=&message=watchOS&color=red)
 
 ```kotlin
 repositories {
-  jcenter()
-  // Or snapshots
-  maven { setUrl("http://oss.jfrog.org/artifactory/oss-snapshot-local") }
+  mavenCentral()
+  // (Optional) For Snapshots:
+  maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
-  implementation("drewcarlson.blockset:blockset-jvm:$blockset_version")
+  // Multiplatform
+  implementation("org.drewcarlson:blockset:$blockset_version")
+  // For JVM:
+  implementation("org.drewcarlson:blockset-jvm:$blockset_version")
 }
 ```
 

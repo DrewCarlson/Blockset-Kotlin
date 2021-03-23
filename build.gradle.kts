@@ -1,8 +1,9 @@
 plugins {
     kotlin("multiplatform") version KOTLIN_VERSION
     kotlin("plugin.serialization") version KOTLIN_VERSION
-    `maven-publish`
 }
+
+apply(from = "gradle/publishing.gradle.kts")
 
 allprojects {
     repositories {
@@ -12,32 +13,6 @@ allprojects {
 }
 
 val testGenSrcPath = "src/commonTest/build/config"
-
-val mavenUrl: String by ext
-val mavenSnapshotUrl: String by ext
-
-
-System.getenv("GITHUB_REF")?.let { ref ->
-    if (ref.startsWith("refs/tags/")) {
-        version = ref.substringAfterLast("refs/tags/")
-    }
-}
-
-publishing {
-    repositories {
-        maven {
-            url = if (version.toString().endsWith("SNAPSHOT")) {
-                uri(mavenSnapshotUrl)
-            } else {
-                uri(mavenUrl)
-            }
-            credentials {
-                username = System.getenv("BINTRAY_USER")
-                password = System.getenv("BINTRAY_API_KEY")
-            }
-        }
-    }
-}
 
 val installTestConfig by tasks.creating {
     val configFile = rootProject.file("${testGenSrcPath}/config.kt")
