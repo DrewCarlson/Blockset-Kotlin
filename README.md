@@ -2,8 +2,8 @@
 
 # Blockset Kotlin
 
-![Bintray](https://img.shields.io/bintray/v/drewcarlson/Blockset-Kotlin/Blockset-Kotlin?color=blue)
-![](https://img.shields.io/maven-metadata/v?label=artifactory&logoColor=lightgrey&metadataUrl=https%3A%2F%2Foss.jfrog.org%2Fartifactory%2Foss-snapshot-local%2Fdrewcarlson%2Fblockset%2Fblockset%2Fmaven-metadata.xml&color=lightgrey)
+
+![Maven Central](https://img.shields.io/maven-central/v/org.drewcarlson/blockset-jvm?label=maven&color=blue)
 ![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Jvm/badge.svg)
 ![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Js/badge.svg)
 ![](https://github.com/DrewCarlson/Blockset-Kotlin/workflows/Native/badge.svg)
@@ -29,6 +29,11 @@ bdbService.getBlockchain("bitcoin-mainnet") { (bitcoin, error) in
 ``` 
 
 ## Download
+
+
+![Maven Central](https://img.shields.io/maven-central/v/org.drewcarlson/blockset-jvm?label=maven&color=blue)
+![Sonatype Nexus (Snapshots)](https://img.shields.io/nexus/s/org.drewcarlson/blockset-jvm?server=https%3A%2F%2Fs01.oss.sonatype.org)
+
 
 ![](https://img.shields.io/static/v1?label=&message=Platforms&color=grey)
 ![](https://img.shields.io/static/v1?label=&message=Js&color=blue)
