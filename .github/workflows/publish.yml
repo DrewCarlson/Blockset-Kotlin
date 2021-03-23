@@ -36,7 +36,7 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         name: Publish (macos)
         with:
-          arguments: clean publish
+          arguments: clean assemble publish
         if: ${{ !startsWith(matrix.os, 'windows') }}
 
       - name: Publish (windows)
