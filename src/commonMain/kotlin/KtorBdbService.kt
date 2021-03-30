@@ -192,10 +192,15 @@ internal class KtorBdbService internal constructor(
     public override suspend fun addressLookup(
         domainName: String,
         vararg currencyCodes: String
+    ): BdbAddresses = addressLookup(domainName, currencyCodes.toList())
+
+    public override suspend fun addressLookup(
+        domainName: String,
+        currencyCodeList: List<String>
     ): BdbAddresses =
         http.get("/resolve") {
             parameter("domain_name", domainName)
-            currencyCodes.forEach {
+            currencyCodeList.forEach {
                 parameter("currency_code", it)
             }
         }

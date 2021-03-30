@@ -108,4 +108,9 @@ interface BdbService {
         domainName: String,
         vararg currencyCodes: String
     ): BdbAddresses
+
+    public suspend fun addressLookup(
+        domainName: String,
+        currencyCodeList: List<String>
+    ): BdbAddresses
 }
