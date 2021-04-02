@@ -16,15 +16,48 @@ interface BdbService {
         ): BdbService = KtorBdbService(httpClient, DEFAULT_BDB_BASE_URL)
 
         public fun createForTest(bdbAuthToken: String): BdbService =
-            KtorBdbService(HttpClient(), DEFAULT_BDB_BASE_URL, bdbAuthToken)
+            KtorBdbService(HttpClient(), DEFAULT_BDB_BASE_URL, AuthProvider.static(bdbAuthToken))
         
         @JvmOverloads
         public fun createForTest(
             bdbAuthToken: String,
             httpClient: HttpClient,
             bdbBaseURL: String = DEFAULT_BDB_BASE_URL
-        ): BdbService = KtorBdbService(httpClient, bdbBaseURL, bdbAuthToken)
+        ): BdbService = KtorBdbService(httpClient, bdbBaseURL, AuthProvider.static(bdbAuthToken))
     }
+
+    interface AuthProvider {
+
+        companion object : AuthProvider {
+            fun static(token: String): AuthProvider =
+                object : AuthProvider {
+                    override fun readUserJwt(): String = token
+                }
+        }
+
+        data class TokenDetails(
+            val currentTimeSeconds: Long,
+            val expirationTimeSeconds: Long,
+        )
+
+        fun newTokenDetails(): TokenDetails = error("Not implemented")
+
+        fun signData(data: String): String = error("Not implemented")
+
+        fun readPubKey(): String = ""
+        fun readDeviceId(): String = ""
+        fun readClientJwt(): String? = null
+
+        fun readUserJwt(): String? = null
+        fun saveUserJwt(jwt: String) = Unit
+    }
+
+    public suspend fun createUserToken(
+        clientToken: String,
+        deviceId: String,
+        pubKey: String,
+        signature: String,
+    ): BdbUserTokenResult
 
     public suspend fun getBlockchains(testnet: Boolean = false): BdbBlockchains
 
