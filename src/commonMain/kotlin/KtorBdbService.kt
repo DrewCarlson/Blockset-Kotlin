@@ -6,41 +6,50 @@ import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.readText
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import kotlin.native.concurrent.SharedImmutable
 
 private const val DEFAULT_BDB_BASE_URL = "api.blockset.com"
 
 @SharedImmutable
-private val json = Json {
+internal val json = Json {
     isLenient = true
     ignoreUnknownKeys = true
     coerceInputValues = true
 }
 
-internal class KtorBdbService internal constructor(
+internal class KtorBdbService(
     httpClient: HttpClient,
     bdbBaseURL: String = DEFAULT_BDB_BASE_URL,
-    bdbAuthToken: String? = null
+    authProvider: BdbService.AuthProvider = BdbService.AuthProvider,
 ) : BdbService {
 
-    @Suppress("UnnecessaryVariable")
     private val http = httpClient.config {
         install(JsonFeature) {
             serializer = KotlinxSerializer(json)
         }
 
-        val baseUrl = bdbBaseURL
-        val token = bdbAuthToken
+        install(BdbAuthentication) {
+            setAuthProvider(authProvider)
+            setUserTokenFactory(::createUserToken)
+        }
+
         defaultRequest {
-            url.host = baseUrl
+            url.host = bdbBaseURL
             url.protocol = URLProtocol.HTTPS
-            token?.let {
-                header("Authorization", "Bearer $it")
-            }
         }
     }
+
+    public override suspend fun createUserToken(
+        clientToken: String,
+        deviceId: String,
+        pubKey: String,
+        signature: String
+    ): BdbUserTokenResult = createUserToken(http, clientToken, deviceId, pubKey, signature)
 
     public override suspend fun getBlockchains(testnet: Boolean): BdbBlockchains =
         http.get("/blockchains") {
@@ -204,4 +213,29 @@ internal class KtorBdbService internal constructor(
                 parameter("currency_code", it)
             }
         }
+}
+
+public suspend fun createUserToken(
+    http: HttpClient,
+    clientToken: String,
+    deviceId: String,
+    pubKey: String,
+    signature: String
+): BdbUserTokenResult {
+    return try {
+        http.post<BdbUserTokenResult.Success>("/users/token") {
+            header("Authorization", "Bearer $clientToken")
+            contentType(ContentType.Application.Json)
+            body = buildJsonObject {
+                put("device_id", deviceId)
+                put("pub_key", pubKey)
+                put("signature", signature)
+            }
+        }
+    } catch (e: ResponseException) {
+        BdbUserTokenResult.Error(
+            status = e.response.status.value,
+            body = e.response.readText(),
+        )
+    }
 }
