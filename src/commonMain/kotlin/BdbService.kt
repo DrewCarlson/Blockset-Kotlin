@@ -145,10 +145,10 @@ interface BdbService {
     public suspend fun addressLookup(
         domainName: String,
         vararg currencyCodes: String
-    ): BdbAddresses
+    ): BdbAddressesResult
 
     public suspend fun addressLookup(
         domainName: String,
         currencyCodeList: List<String>
-    ): BdbAddresses
+    ): BdbAddressesResult
 }

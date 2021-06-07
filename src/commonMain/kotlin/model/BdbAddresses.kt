@@ -3,17 +3,24 @@ package drewcarlson.blockset
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+sealed class BdbAddressesResult
+
 @Serializable
 data class BdbAddresses(
     @SerialName("_embedded")
     val embedded: Embedded,
-) {
+) : BdbAddressesResult() {
 
     @Serializable
     data class Embedded(
         val addresses: List<BdbAddress>
     )
 }
+
+data class BdbAddressesError(
+    val status: Int,
+    val body: String?,
+) : BdbAddressesResult()
 
 @Serializable
 data class BdbAddress(

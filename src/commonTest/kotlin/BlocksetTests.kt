@@ -38,7 +38,8 @@ class BlocksetTests {
 
     @Test
     fun testAddressLookup() = runBlocking {
-        val addresses = bdbService.addressLookup("ijustine.eth", "eth").embedded.addresses
+        val result = bdbService.addressLookup("ijustine.eth", "eth")
+        val addresses = (result as BdbAddresses).embedded.addresses
         assertEquals(BdbAddress.Status.SUCCESS, addresses.first().status)
     }
 }
