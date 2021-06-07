@@ -201,18 +201,27 @@ internal class KtorBdbService(
     public override suspend fun addressLookup(
         domainName: String,
         vararg currencyCodes: String
-    ): BdbAddresses = addressLookup(domainName, currencyCodes.toList())
+    ): BdbAddressesResult = addressLookup(domainName, currencyCodes.toList())
 
     public override suspend fun addressLookup(
         domainName: String,
         currencyCodeList: List<String>
-    ): BdbAddresses =
-        http.get("/resolve") {
-            parameter("domain_name", domainName)
-            currencyCodeList.forEach {
-                parameter("currency_code", it)
+    ): BdbAddressesResult {
+        return try {
+            http.get<BdbAddresses>("/resolve") {
+                parameter("domain_name", domainName)
+                currencyCodeList.forEach {
+                    parameter("currency_code", it)
+                }
             }
+        } catch (e: Throwable) {
+            val response = (e as? ResponseException)?.response
+            BdbAddressesError(
+                status = response?.status?.value ?: -1,
+                body = response?.readText(),
+            )
         }
+    }
 }
 
 public suspend fun createUserToken(
@@ -232,10 +241,11 @@ public suspend fun createUserToken(
                 put("signature", signature)
             }
         }
-    } catch (e: ResponseException) {
+    } catch (e: Throwable) {
+        val response = (e as? ResponseException)?.response
         BdbUserTokenResult.Error(
-            status = e.response.status.value,
-            body = e.response.readText(),
+            status = response?.status?.value ?: -1,
+            body = response?.readText(),
         )
     }
 }
