@@ -26,21 +26,15 @@ val installTestConfig by tasks.creating {
                 "BDB_CLIENT_TOKEN must be set for tests to run."
             }
             configFile.writeText(buildString {
-                appendln("package drewcarlson.blockset")
-                appendln("const val BDB_CLIENT_TOKEN = \"$bdbClientToken\"")
+                appendLine("package drewcarlson.blockset")
+                appendLine("const val BDB_CLIENT_TOKEN = \"$bdbClientToken\"")
             })
         }
     }
 }
 
 kotlin {
-    jvm {
-        compilations.onEach { compilation ->
-            compilation.kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
+    jvm()
     js(BOTH) {
         browser {
             testTask {
