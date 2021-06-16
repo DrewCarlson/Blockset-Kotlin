@@ -6,8 +6,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven { setUrl("https://kotlin.bintray.com/kotlinx") }
-    maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
 
 kotlin {
@@ -34,6 +32,7 @@ kotlin {
                 implementation(rootProject)
                 implementation("org.jetbrains.kotlinx:kotlinx-cli:$KOTLIN_CLI_VERSION")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINES_VERSION")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$SERIALIZATION_VERSION")
                 implementation("io.ktor:ktor-client-core:$KTOR_VERSION")
                 implementation("io.ktor:ktor-client-logging:$KTOR_VERSION")
                 implementation("io.ktor:ktor-client-json:$KTOR_VERSION")

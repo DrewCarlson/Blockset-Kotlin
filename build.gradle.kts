@@ -74,12 +74,6 @@ kotlin {
     }
 
     sourceSets {
-        all {
-            languageSettings.apply {
-                useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
-            }
-        }
-
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
