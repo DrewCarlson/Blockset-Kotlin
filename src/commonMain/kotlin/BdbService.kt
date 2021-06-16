@@ -95,10 +95,14 @@ interface BdbService {
         addresses: List<String>,
         beginBlockNumber: ULong?,
         endBlockNumber: ULong?,
-        maxPageSize: Int? = null
+        maxPageSize: Int? = null,
+        mergeCurrencies: Boolean = false,
     ): List<BdbTransfer>
 
-    public suspend fun getTransfer(transferId: String): BdbTransfer
+    public suspend fun getTransfer(
+        transferId: String,
+        mergeCurrencies: Boolean = false,
+    ): BdbTransfer
 
     public suspend fun getTransactions(
         blockchainId: String,
@@ -112,12 +116,14 @@ interface BdbService {
         includeTransfers: Boolean = true,
         includeCalls: Boolean = false,
         maxPageSize: Int? = null,
+        mergeCurrencies: Boolean = false,
     ): BdbTransactions
 
     public suspend fun getTransaction(
         transactionId: String,
         includeRaw: Boolean,
-        includeProof: Boolean
+        includeProof: Boolean,
+        mergeCurrencies: Boolean = false,
     ): BdbTransaction
 
     public suspend fun createTransaction(

@@ -24,7 +24,7 @@ data class BdbTransaction(
     val hash: String,
     @SerialName("blockchain_id")
     val blockchainId: String,
-    val size: Long, // TODO: ULong
+    val size: ULong,
     val fee: BdbAmount,
     val status: String,
     @SerialName("_embedded")
@@ -32,14 +32,14 @@ data class BdbTransaction(
     @SerialName("first_seen")
     val firstSeen: String? = null, // TODO: Date
     val timestamp: String? = null, // TODO: Date
-    val index: Long? = null, // TODO: ULong
+    val index: ULong? = null,
     @SerialName("block_hash")
-    val blockHash: String?,
+    val blockHash: String? = null,
     @SerialName("block_height")
-    val blockHeight: Long? = null, // TODO: ULong
-    val acknowledgements: Long? = null, // TODO: ULong
-    val confirmations: Long? = null, // TODO: ULong
-    val raw: String?,
+    val blockHeight: ULong? = null,
+    val acknowledgements: ULong? = null,
+    val confirmations: ULong? = null,
+    val raw: String? = null,
     val proof: String? = null
 ) {
 

@@ -9,7 +9,7 @@ data class BdbTransfer(
     val transferId: String,
     @SerialName("blockchain_id")
     val blockchainId: String,
-    val index: Long, // TODO: ULong
+    val index: ULong,
     val amount: BdbAmount,
     val meta: Map<String, String>,
     @SerialName("from_address")
@@ -18,5 +18,5 @@ data class BdbTransfer(
     val toAddress: String? = null,
     @SerialName("transaction_id")
     val transactionId: String? = null,
-    val acknowledgements: Long? = null // TODO: ULong
+    val acknowledgements: ULong? = null,
 )

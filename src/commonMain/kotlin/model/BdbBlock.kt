@@ -10,14 +10,14 @@ data class BdbBlock(
     val hash: String,
     @SerialName("blockchain_id")
     val blockchainId: String,
-    val height: Long, // TODO: Ulong
+    val height: ULong,
     val mined: String,
     @SerialName("transaction_ids")
     val transactionIds: List<String>? = emptyList(),
-    val size: Long, // TODO: ULong
+    val size: ULong,
     @SerialName("total_fees")
     val totalFees: BdbAmount,
-    val acknowledgements: Long, // TODO: ULong
+    val acknowledgements: ULong,
     @SerialName("is_active_chain")
     val isActiveChain: Boolean,
     @SerialName("_embedded")

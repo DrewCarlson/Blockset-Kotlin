@@ -38,7 +38,7 @@ data class BdbCurrency(
         val name: String,
         @SerialName("short_name")
         val code: String,
-        val decimals: Int, // TODO: UInt
+        val decimals: UInt,
         val symbol: String? = null // TODO: Use lookupSymbol for default value
     ) {
 

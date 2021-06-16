@@ -103,7 +103,8 @@ internal class KtorBdbService(
         addresses: List<String>,
         beginBlockNumber: ULong?,
         endBlockNumber: ULong?,
-        maxPageSize: Int?
+        maxPageSize: Int?,
+        mergeCurrencies: Boolean,
     ): List<BdbTransfer> =
         http.get("/transfers") {
             parameter("blockchain_id", blockchainId)
@@ -111,12 +112,18 @@ internal class KtorBdbService(
             parameter("end_height", endBlockNumber)
             parameter("max_page_size", maxPageSize)
             parameter("address", addresses)
+            parameter("merge_currencies", mergeCurrencies)
         }
 
-    public override suspend fun getTransfer(transferId: String): BdbTransfer =
-        http.get("/transfers/$transferId")
+    public override suspend fun getTransfer(
+        transferId: String,
+        mergeCurrencies: Boolean,
+    ): BdbTransfer =
+        http.get("/transfers/$transferId") {
+            parameter("merge_currencies", mergeCurrencies)
+        }
 
-    override suspend fun getTransactions(
+    public override suspend fun getTransactions(
         blockchainId: String,
         addresses: List<String>,
         beginBlockNumber: ULong,
@@ -127,7 +134,8 @@ internal class KtorBdbService(
         includeProof: Boolean,
         includeTransfers: Boolean,
         includeCalls: Boolean,
-        maxPageSize: Int?
+        maxPageSize: Int?,
+        mergeCurrencies: Boolean,
     ): BdbTransactions =
         http.get("/transactions") {
             parameter("blockchain_id", blockchainId)
@@ -141,16 +149,19 @@ internal class KtorBdbService(
             parameter("start_ts", startTimestamp)
             parameter("end_ts", endTimestamp)
             parameter("address", addresses.joinToString(","))
+            parameter("merge_currencies", mergeCurrencies)
         }
 
     public override suspend fun getTransaction(
         transactionId: String,
         includeRaw: Boolean,
-        includeProof: Boolean
+        includeProof: Boolean,
+        mergeCurrencies: Boolean,
     ): BdbTransaction =
         http.get("/transactions/$transactionId") {
             parameter("include_raw", includeRaw)
             parameter("include_proof", includeProof)
+            parameter("merge_currencies", mergeCurrencies)
         }
 
     public override suspend fun createTransaction(

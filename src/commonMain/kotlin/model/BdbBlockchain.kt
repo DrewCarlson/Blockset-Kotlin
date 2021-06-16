@@ -29,14 +29,13 @@ data class BdbBlockchain(
     @SerialName("is_mainnet")
     val isMainnet: Boolean,
     @SerialName("confirmations_until_final")
-    val confirmationsUntilFinal: Int, // TODO: UInt
+    val confirmationsUntilFinal: UInt,
     @SerialName("block_height")
-    val blockHeight: Long, // TODO: ULong
+    val blockHeight: ULong,
     @SerialName("verified_block_hash")
     val verifiedBlockHash: String? = null,
     @SerialName("verified_height")
-    val verifiedHeight: Long? = null, // TODO: ULong
+    val verifiedHeight: ULong? = null,
 ) {
-    fun hasBlockHeight() =
-        blockHeight.toULong() != BLOCK_HEIGHT_UNSPECIFIED
+    fun hasBlockHeight() = blockHeight != BLOCK_HEIGHT_UNSPECIFIED
 }

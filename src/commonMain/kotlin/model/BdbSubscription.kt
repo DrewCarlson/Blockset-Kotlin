@@ -44,7 +44,7 @@ data class BdbSubscription(
     @Serializable
     data class Event(
         val name: String,
-        val confirmations: Int // TODO: UInt
+        val confirmations: UInt,
     )
 
     @Serializable
