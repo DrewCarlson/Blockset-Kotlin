@@ -103,11 +103,15 @@ interface BdbService {
     public suspend fun getTransactions(
         blockchainId: String,
         addresses: List<String>,
-        beginBlockNumber: ULong?,
-        endBlockNumber: ULong?,
-        includeRaw: Boolean,
-        includeProof: Boolean,
-        maxPageSize: Int? = null
+        beginBlockNumber: ULong = 0u,
+        endBlockNumber: ULong? = null,
+        startTimestamp: ULong? = null,
+        endTimestamp: ULong? = null,
+        includeRaw: Boolean = false,
+        includeProof: Boolean = false,
+        includeTransfers: Boolean = true,
+        includeCalls: Boolean = false,
+        maxPageSize: Int? = null,
     ): BdbTransactions
 
     public suspend fun getTransaction(
@@ -131,7 +135,7 @@ interface BdbService {
         beginBlockNumber: ULong? = null,
         endBlockNumber: ULong? = null,
         maxPageSize: Int? = null
-    ): List<BdbBlock>
+    ): BdbBlockList
 
     public suspend fun getBlock(
         blockId: String,

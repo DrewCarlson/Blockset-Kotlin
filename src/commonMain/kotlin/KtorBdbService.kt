@@ -116,22 +116,30 @@ internal class KtorBdbService(
     public override suspend fun getTransfer(transferId: String): BdbTransfer =
         http.get("/transfers/$transferId")
 
-    public override suspend fun getTransactions(
+    override suspend fun getTransactions(
         blockchainId: String,
         addresses: List<String>,
-        beginBlockNumber: ULong?,
+        beginBlockNumber: ULong,
         endBlockNumber: ULong?,
+        startTimestamp: ULong?,
+        endTimestamp: ULong?,
         includeRaw: Boolean,
         includeProof: Boolean,
+        includeTransfers: Boolean,
+        includeCalls: Boolean,
         maxPageSize: Int?
     ): BdbTransactions =
         http.get("/transactions") {
             parameter("blockchain_id", blockchainId)
             parameter("include_proof", includeProof)
             parameter("include_raw", includeRaw)
+            parameter("include_calls", includeCalls)
+            parameter("include_transfers", includeTransfers)
             parameter("start_height", beginBlockNumber)
             parameter("end_height", endBlockNumber)
-            parameter("max_page_size", maxPageSize ?: 3 * 20)
+            parameter("max_page_size", maxPageSize)
+            parameter("start_ts", startTimestamp)
+            parameter("end_ts", endTimestamp)
             parameter("address", addresses.joinToString(","))
         }
 
@@ -165,7 +173,7 @@ internal class KtorBdbService(
         beginBlockNumber: ULong?,
         endBlockNumber: ULong?,
         maxPageSize: Int?
-    ): List<BdbBlock> =
+    ): BdbBlockList =
         http.get("/blocks") {
             parameter("blockchain_id", blockchainId)
             parameter("include_raw", includeRaw)

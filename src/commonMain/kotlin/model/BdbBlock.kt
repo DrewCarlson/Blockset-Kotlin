@@ -11,9 +11,9 @@ data class BdbBlock(
     @SerialName("blockchain_id")
     val blockchainId: String,
     val height: Long, // TODO: Ulong
-    val mined: Long, // TODO: ULong
+    val mined: String,
     @SerialName("transaction_ids")
-    val transactionIds: List<String>,
+    val transactionIds: List<String>? = emptyList(),
     val size: Long, // TODO: ULong
     @SerialName("total_fees")
     val totalFees: BdbAmount,
