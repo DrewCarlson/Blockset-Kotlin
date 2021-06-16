@@ -1,16 +1,16 @@
 package cli
 
+import com.github.ajalt.clikt.core.*
 import drewcarlson.blockset.BdbService
-import kotlinx.cli.Subcommand
 
 class PushEndpointsCommand(
     private val blockset: BdbService
-) : Subcommand(
+) : CliktCommand(
     name = "push",
-    actionDescription = "" // TODO
+    help = "" // TODO
 ) {
 
-    override fun execute() {
+    override fun run() {
         TODO("not implemented")
     }
 }

@@ -1,16 +1,16 @@
 package cli
 
+import com.github.ajalt.clikt.core.*
 import drewcarlson.blockset.BdbService
-import kotlinx.cli.Subcommand
 
 class TransactionsCommand(
     private val blockset: BdbService
-) : Subcommand(
+) : CliktCommand(
     name = "transactions",
-    actionDescription = "" // TODO
+    help = "" // TODO
 ) {
 
-    override fun execute() {
+    override fun run() {
         TODO("not implemented")
     }
 }

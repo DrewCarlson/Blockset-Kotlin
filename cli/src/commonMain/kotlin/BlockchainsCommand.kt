@@ -1,47 +1,57 @@
 package cli
 
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
 import drewcarlson.blockset.BdbService
-import kotlinx.cli.ArgType
-import kotlinx.cli.Subcommand
-import kotlinx.cli.default
-import kotlinx.cli.optional
 import kotlinx.coroutines.runBlocking
 
 
 class BlockchainsCommand(
     private val blockset: BdbService,
     private val terminal: Terminal
-) : Subcommand(
+) : CliktCommand(
     name = "blockchains",
-    actionDescription = "Retrieves supported blockchains."
+    help = "Retrieves supported blockchains."
 ) {
-    private val blockchainId by argument(
-        ArgType.String,
-        fullName = "blockchainId",
-        description = "" // TODO
-    ).optional()
+    private val blockchainId by option(
+        help = "A blockchain network id to query."
+    )
 
     private val testnet by option(
-        ArgType.Boolean,
-        fullName = "testnet",
-        description = "" // TODO
-    ).default(false)
+        help = "When true, only display test network blockchains."
+    ).flag(default = false)
 
-    override fun execute(): Unit = runBlocking {
+    private val fees by option(
+        help = "When true, prints current network fee data."
+    ).flag(default = false)
+
+    override fun run(): Unit = runBlocking {
         val blockchains = blockchainId?.let { listOf(blockset.getBlockchain(it)) }
             ?: blockset.getBlockchains(testnet = testnet)
                 .embedded.blockchains
 
-        terminal.print(table {
+        terminal.println(table {
             header {
-                row("Name", "ID", "Height", "Network")
+                row("Name", "ID", "Height", "Network") {
+                    if (fees) {
+                        cell("Fees")
+                    }
+                }
             }
             body {
                 blockchains.forEach { blockchain ->
                     with(blockchain) {
-                        row(name, id, blockHeight, network)
+                        row(name, id, blockHeight, network) {
+                            if (fees) {
+                                cell(
+                                    feeEstimates.joinToString { feeEstimate ->
+                                        "${feeEstimate.tier}:${feeEstimate.fee.value}"
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
