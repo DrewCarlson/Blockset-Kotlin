@@ -16,9 +16,13 @@ interface BdbService {
         ): BdbService = KtorBdbService(httpClient, DEFAULT_BDB_BASE_URL)
 
         public fun create(
-            httpClient: HttpClient = HttpClient(),
+            httpClient: HttpClient,
             authProvider: AuthProvider
         ): BdbService = KtorBdbService(httpClient, authProvider = authProvider)
+
+        public fun create(
+            authProvider: AuthProvider
+        ): BdbService = KtorBdbService(HttpClient(), authProvider = authProvider)
 
         public fun createForTest(bdbAuthToken: String): BdbService =
             KtorBdbService(HttpClient(), DEFAULT_BDB_BASE_URL, AuthProvider.static(bdbAuthToken))
