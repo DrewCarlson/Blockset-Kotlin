@@ -8,3 +8,4 @@ pluginManagement {
 rootProject.name = "blockset"
 
 include(":cli")
+include(":etherscan-compare")
