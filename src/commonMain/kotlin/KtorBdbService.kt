@@ -60,9 +60,15 @@ internal class KtorBdbService(
     public override suspend fun getBlockchain(id: String): BdbBlockchain =
         http.get("/blockchains/$id")
 
-    public override suspend fun getCurrencies(blockchainId: String?): BdbCurrencies =
+    public override suspend fun getCurrencies(
+        blockchainId: String?,
+        verified: Boolean,
+        testnet: Boolean?,
+    ): BdbCurrencies =
         http.get("/currencies") {
             parameter("blockchain_id", blockchainId)
+            parameter("verified", verified)
+            parameter("testnet", testnet)
         }
 
     public override suspend fun getCurrency(currencyId: String): BdbCurrency =

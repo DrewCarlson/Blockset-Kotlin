@@ -72,7 +72,11 @@ interface BdbService {
 
     public suspend fun getBlockchain(id: String): BdbBlockchain
 
-    public suspend fun getCurrencies(blockchainId: String? = null): BdbCurrencies
+    public suspend fun getCurrencies(
+        blockchainId: String? = null,
+        verified: Boolean = true,
+        testnet: Boolean? = null,
+    ): BdbCurrencies
 
     public suspend fun getCurrency(currencyId: String): BdbCurrency
 
