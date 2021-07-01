@@ -52,7 +52,7 @@ data class BdbCurrency(
 
             private fun lookupSymbol(code: String): String {
                 val symbol = CURRENCY_SYMBOLS[code]
-                return symbol ?: code
+                return symbol ?: code.uppercase()
             }
         }
     }
